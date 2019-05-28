@@ -147,13 +147,14 @@ mprovisionsProof MoneroExchange::GenerateMprovisionsPoa(){
         ks[i] = rct::skGen();
         rct::key kG = rct::scalarmultBase(ks[i]);
         rct::addKeys(m_provisions_proof.ps[i], m_provisions_proof.cs[i], kG);
-        xHats[i] = m_ownKeys[i]; 
+        xHats[i] = m_ownKeys[i];
         rct::key hashPk = rct::hashToPoint(m_provisions_proof.addrs[i]);
-        es[i] = rct::skGen();
-        rct::addKeys(m_provisions_proof.ms[i], rct::scalarmultKey(hashPk, xHats[i]), rct::scalarmultH(es[i]));
-        fs[i] = rct::skGen();
-        rct::addKeys(m_provisions_proof.ns[i], rct::scalarmultBase(xHats[i]), rct::scalarmultH(fs[i]));
         m_provisions_proof.Is[i] = rct::scalarmultKey(hashPk, m_ownKeys[i]);
+        es[i] = rct::skGen();
+        rct::addKeys(m_provisions_proof.ms[i], m_provisions_proof.Is[i], rct::scalarmultH(es[i]));
+        fs[i] = rct::skGen();
+        rct::addKeys(m_provisions_proof.ns[i], m_provisions_proof.addrs[i], rct::scalarmultH(fs[i]));
+       
     }
     else 
     {
